@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div>
+  {{ macros.m_button_group([['global_setting_save_btn', '설정 저장']])}}
+  {{ macros.m_row_start('5') }}
+  {{ macros.m_row_end() }}  
+  <nav>
+    {{ macros.m_tab_head_start() }}
+      {{ macros.m_tab_head2('normal', '일반', true) }}
+      {{ macros.m_tab_head2('action', '기타', false) }}
+    {{ macros.m_tab_head_end() }}
+  </nav>
+  <div class="tab-content" id="nav-tabContent">
+    {{ macros.m_tab_content_start('normal', true) }}
+      {{ macros.setting_global_scheduler_button(arg['scheduler'], arg['is_running']) }}
+      <form id='setting' name='setting'>
+        {{ macros.setting_input_text('interval', '스케쥴링 실행 정보', value=arg['interval'], col='3', desc=['Inverval(minute 단위)이나 Cron 설정']) }}
+        {{ macros.setting_checkbox('auto_start', '시작시 자동실행', value=arg['auto_start'], desc='On : 시작시 자동으로 스케쥴러에 등록됩니다.') }}
+        {{ macros.setting_input_text('work_path', '변환할 폴더', desc=['smi 파일을 탐색할 폴더입니다.', '2개 이상일 경우 구분자 ,'], value=arg['work_path']) }}
+        {{ macros.setting_checkbox('flag_remake', '재변환', value=arg['flag_remake'], desc=['On : 이미 srt 파일이 있는 경우에도 다시 변환합니다.']) }}
+        {{ macros.setting_checkbox('flag_remove_smi', '변환 후 smi 파일 삭제', value=arg['flag_remove_smi'], desc=['On : srt로 변환 성공 시 smi 파일을 삭제합니다.']) }}
+        {{ macros.setting_checkbox('flag_append_ko', 'ko 삽입', value=arg['flag_append_ko'], desc=['On : .smi 를 .ko.srt 로 변환합니다.']) }}
+        {{ macros.setting_checkbox('flag_change_ko_srt', '.srt => .ko.srt 변환', value=arg['flag_change_ko_srt'], desc=['On : 탐색시 .srt파일을 .ko.srt으로 변환합니다.']) }}
+        {{ macros.setting_checkbox('fail_file_move', '변환 실패시 파일 이동', value=arg['fail_file_move'], desc=['On : 실패된 파일을 지정된 폴더로 이동합니다.', 'Off : 실행시마다 변환 시도합니다.']) }}
+        <div id="fail_file_move_div" class="collapse">
+        {{ macros.setting_input_text('not_smi_move_path', 'NOT SMI 파일', desc=['SMI 포맷이 아닌 .smi 파일이 이동할 폴더입니다.'], value=arg['not_smi_move_path']) }}
+        {{ macros.setting_input_text('fail_move_path', '변환 실패한 파일', desc=['변환 실패시 .smi 파일이 이동할 폴더입니다.'], value=arg['fail_move_path']) }}
+        </div>
+      </form>
+      {{ macros.m_tab_content_end() }}
+      {{ macros.m_tab_content_start('action', false) }}      
+        {{ macros.setting_button([['global_one_execute_btn', '1회 실행']], left='1회 실행' ) }}
+        {{ macros.setting_button([['global_reset_db_btn', '목록 전체 지우기']], left='DB정리' ) }}
+      {{ macros.m_tab_content_end() }}
+  </div><!--tab-content-->
+</div> <!--전체-->
+
+
+<script type="text/javascript">
+var package_name = "{{arg['package_name'] }}";
+var current_data = null;
+
+$(document).ready(function(){
+  use_collapse("fail_file_move");
+});
+
+$('#fail_file_move').change(function() {
+  use_collapse('fail_file_move');
+});
+
+</script>    
+{% endblock %}
