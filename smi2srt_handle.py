@@ -311,7 +311,7 @@ class SMI2SRTHandle(object):
                 try:
                     try:
                         fndx = smi_sgml.upper().find('<SYNC')
-                    except Exception, e:
+                    except Exception as e:
                         raise e
 
                     if fndx < 0:

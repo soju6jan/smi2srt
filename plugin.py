@@ -27,19 +27,19 @@ from .model import ModelSetting, ModelSmi2srtFile
 blueprint = Blueprint(package_name, package_name, url_prefix='/%s' %  package_name, template_folder=os.path.join(os.path.dirname(__file__), 'templates'))
 
 menu = {
-    'main' : [package_name, 'SMI to SRT'],
+    'main' : [package_name, u'SMI to SRT'],
     'sub' : [
-        ['setting', '설정'], ['list', '처리결과'], ['log', '로그']
+        ['setting', u'설정'], ['list', u'처리결과'], ['log', u'로그']
     ],
     'category' : 'fileprocess'
 }  
 
 plugin_info = {
     'version' : '0.1.0.0',
-    'name' : 'smi2srt',
+    'name' : u'smi2srt',
     'category_name' : 'fileprocess',
     'developer' : 'soju6jan',
-    'description' : 'smi to srt 변환',
+    'description' : u'smi to srt 변환',
     'home' : 'https://github.com/soju6jan/smi2srt',
     'more' : '',
 }
