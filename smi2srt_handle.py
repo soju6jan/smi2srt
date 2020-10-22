@@ -26,6 +26,7 @@ import io
 logger = None
 try:
     # SJVA
+    from framework import py_unicode
     from framework.util import Util
     from .plugin import logger, package_name
 except:
@@ -133,7 +134,7 @@ class SMI2SRTHandle(object):
         log_debug("convert_directory : <%s>" % work_path)
         try:
             if lists is None:
-                lists = os.listdir(unicode(work_path))
+                lists = os.listdir(py_unicode(work_path))
             for item in lists:
                 try:
                     eachfile = os.path.join(work_path, item)
@@ -293,7 +294,7 @@ class SMI2SRTHandle(object):
                         if not line: 
                             break
                         try:
-                            lines.append(unicode(line, encoding.lower()).encode('utf-8'))
+                            lines.append(py_unicode(line, encoding.lower()).encode('utf-8'))
                         except:
                             count += 1
                             pass
@@ -395,8 +396,8 @@ class SMI2SRTHandle(object):
                         if si.contents == None or len(si.contents) <= 0:
                             continue
                         sistr = '%d\n%s --> %s\n%s\n\n' % (ndx, si.start_ts, si.end_ts, si.contents)
-                        #sistr = unicode(sistr, 'utf-8').encode('euc-kr')
-                        sistr = unicode(sistr, 'utf-8')
+                        #sistr = py_unicode(sistr, 'utf-8').encode('euc-kr')
+                        sistr = py_unicode(sistr, 'utf-8')
                         ofp.write(sistr)
                         ndx += 1
                     ofp.close()
