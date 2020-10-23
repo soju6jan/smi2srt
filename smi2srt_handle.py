@@ -26,7 +26,7 @@ import io
 logger = None
 try:
     # SJVA
-    from framework import py_unicode
+    from framework import py_unicode, app
     from framework.util import Util
     from .plugin import logger, package_name
 except:
@@ -294,7 +294,7 @@ class SMI2SRTHandle(object):
                         if not line: 
                             break
                         try:
-                            lines.append(py_unicode(line, encoding.lower()).encode('utf-8'))
+                            lines.append(unicode(line, encoding.lower()).encode('utf-8'))
                         except:
                             count += 1
                             pass
@@ -397,7 +397,7 @@ class SMI2SRTHandle(object):
                             continue
                         sistr = '%d\n%s --> %s\n%s\n\n' % (ndx, si.start_ts, si.end_ts, si.contents)
                         #sistr = py_unicode(sistr, 'utf-8').encode('euc-kr')
-                        sistr = py_unicode(sistr, 'utf-8')
+                        sistr = unicode(sistr, 'utf-8')
                         ofp.write(sistr)
                         ndx += 1
                     ofp.close()
