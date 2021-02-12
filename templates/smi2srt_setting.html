@@ -69,13 +69,14 @@ $('#fail_file_move').change(function() {
   use_collapse('fail_file_move');
 });
   
-let get_work_path = (path = '/') => {
+let get_work_path = (path = '/', only_dir = true) => {
             $.ajax({
                 url: `/${package_name}/ajax/get_work_path`,
                 type: 'POST',
                 cache: false,
                 data: {
-                    path: path
+                    path: path,
+                    only_dir : only_dir
                 },
                 dataType: 'json'
             }).done((datas) => {
