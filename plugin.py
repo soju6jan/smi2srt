@@ -100,6 +100,17 @@ def ajax(sub):
         elif sub == 'web_list':
             ret = ModelSmi2srtFile.web_list(request)
             return jsonify(ret)
+        elif sub == 'get_work_path':
+            if 'path' in request.form:
+                if 'only_dir' in request.form and request.form['only_dir'].lower() == 'true':
+                    result_list = [name for name in os.listdir(request.form['path']) if os.path.isdir(os.path.join(request.form['path'],name))]
+                else:
+                    result_list = os.listdir(request.form['path'])
+                result_list.sort()
+                result_list = ['..'] + result_list
+                return jsonify(result_list)
+            else:
+                return jsonify(None)
     except Exception as e: 
         logger.error('Exception:%s', e)
         logger.error(traceback.format_exc())  
