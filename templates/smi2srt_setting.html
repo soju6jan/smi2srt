@@ -36,26 +36,6 @@
   </div><!--tab-content-->
 </div> <!--전체-->
 
-<div class="modal fade" id="modal_add_work_path" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="modal-title">경로 선택: </h4>
-            </div>
-            <div class="modal-body" id="modal_body" style="word-break: break-all;">
-                {{ macros.setting_input_text_and_buttons('text_modal_path', '경로 선택',[['btn_push_current_path', '경로 로드']], desc=['입력한 경로를 불러옵니다.'], value='/') }}
-                <div class="list-group" id="list_group_file_path">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id='trailer_push_btn' class="btn btn-success" data-dismiss="modal">경로 추가
-                </button>
-                <button type="button" id='trailer_close_btn' class="btn btn-default" data-dismiss="modal">닫기
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
 var package_name = "{{arg['package_name'] }}";
@@ -69,66 +49,19 @@ $('#fail_file_move').change(function() {
   use_collapse('fail_file_move');
 });
   
-let get_work_path = (path = '/', only_dir = true) => {
-            $.ajax({
-                url: `/${package_name}/ajax/get_work_path`,
-                type: 'POST',
-                cache: false,
-                data: {
-                    path: path,
-                    only_dir : only_dir
-                },
-                dataType: 'json'
-            }).done((datas) => {
-                let new_obj = ``;
-                const path_spliter = (path.indexOf('/')>=0)?'/':'\\';
-                $('#list_group_file_path').empty();
-                for (let dt of datas) {
-                    new_obj += `<a href='#' class="list-group-item list-group-item-action item_path">${dt}</a>`;
-                }
-                $('#list_group_file_path').append(new_obj);
-                $('.item_path').off('click').click((evt) => {
-                    let new_path = '';
-                    if ($(evt.currentTarget).text() === '..'){
-                        let split_path = '';
-                        split_path = path.split(path_spliter);
-                        split_path.pop();
-                        new_path = split_path.join(path_spliter);
-                        if (new_path.length === 0){
-                            new_path = path_spliter
-                        }
-                    }else{
-                        new_path = (path !== path_spliter) ? path + path_spliter + $(evt.currentTarget).text() : path + $(evt.currentTarget).text();
-                    }
-                    $('#text_modal_path').val(new_path);
-                    get_work_path(new_path);
-                });
-            }).fail((datas) => {
-                $.notify('<strong>경로 읽기 실패</strong><br/>${add_path}', {type: 'danger'});
-            });
-            return false;
+
+$('#btn_add_work_path').click((evt) => {
+    let add_path = '/';
+    m_select_local_file_modal("경로 선택", '/', 'true', function(result){
+        let prev_val = $('#work_path').val();
+        if (prev_val.length > 0) {
+            $('#work_path').val(prev_val + ',' + result)
+        } else {
+            $('#work_path').val(result);
         }
-        $('#btn_add_work_path').click((evt) => {
-            let add_path = '/';
-            $('#text_modal_path').val(add_path);
-            $('#modal_add_work_path').modal();
-            get_work_path(add_path);
-            return false;
-        });
-        $('#btn_push_current_path').click((evt) => {
-            let current_path = $('#text_modal_path').val().trim();
-            get_work_path(current_path);
-            return false;
-        });
-        $('#trailer_push_btn').click((evt) => {
-            let prev_val = $('#work_path').val();
-            if (prev_val.length > 0) {
-                $('#work_path').val(prev_val + ',' + $('#text_modal_path').val())
-            } else {
-                $('#work_path').val($('#text_modal_path').val());
-            }
-            $('#modal_add_work_path').modal('toggle');
-            return false;
-        });
+    });
+    return false;
+});
+
 </script>    
 {% endblock %}
