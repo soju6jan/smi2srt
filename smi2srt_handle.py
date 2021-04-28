@@ -54,20 +54,12 @@ class smiItem(object):
         self.linecount = 0
     @staticmethod
     def ms2ts(ms):
-        if sys.version_info[0] == 2:
-            hours = ms / 3600000L
-            ms = ms - hours * 3600000L
-            minutes = ms / 60000L
-            ms = ms - minutes * 60000L
-            seconds = ms / 1000L
-            ms = ms - seconds * 1000L
-        else:
-            hours = ms / 3600000
-            ms = ms - hours * 3600000
-            minutes = ms / 60000
-            ms = ms - minutes * 60000
-            seconds = ms / 1000
-            ms = ms - seconds * 1000
+        hours = ms / 3600000
+        ms = ms - hours * 3600000
+        minutes = ms / 60000
+        ms = ms - minutes * 60000
+        seconds = ms / 1000
+        ms = ms - seconds * 1000
         s = '%02d:%02d:%02d,%03d' % (hours, minutes, seconds, ms)
         return s
     def convertSrt(self):
