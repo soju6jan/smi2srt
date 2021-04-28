@@ -46,12 +46,8 @@ def log_info(msg, *args, **kwargs):
 
 class smiItem(object):
     def __init__(self):
-        if sys.version_info[0] == 2:
-            self.start_ms = 0L
-            self.end_ms = 0L
-        else:
-            self.start_ms = 0
-            self.end_ms = 0
+        self.start_ms = 0
+        self.end_ms = 0
         self.start_ts = '00:00:00,000'
         self.end_ts = '00:00:00,000'
         self.contents = None
