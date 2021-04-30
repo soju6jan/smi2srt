@@ -307,7 +307,8 @@ class SMI2SRTHandle(object):
             data = SMI2SRTHandle.demuxSMI(smi_sgml)
             ret['lang_count'] = len(data)
             ret['srt_list'] = []
-            for lang, smi_sgml in data.iteritems():
+            #for lang, smi_sgml in data.iteritems():
+            for lang, smi_sgml in data.items():
                 log_debug('lang info : %s', lang)
                 try:
                     try:
@@ -369,13 +370,13 @@ class SMI2SRTHandle(object):
                             sync_cont += line[0:sndx]
                             last_si = si
                             if last_si != None:
-                                last_si.end_ms = long(m.group(1))
+                                last_si.end_ms = int(m.group(1))
                                 last_si.contents = sync_cont
                                 srt_list.append(last_si)
                                 last_si.linecount = linecnt
                             sync_cont = m.group(2)
                             si = smiItem()
-                            si.start_ms = long(m.group(1))
+                            si.start_ms = int(m.group(1))
                         else:
                             sync_cont += line
                             
@@ -397,7 +398,7 @@ class SMI2SRTHandle(object):
                             continue
                         sistr = '%d\n%s --> %s\n%s\n\n' % (ndx, si.start_ts, si.end_ts, si.contents)
                         #sistr = py_unicode(sistr, 'utf-8').encode('euc-kr')
-                        sistr = unicode(sistr, 'utf-8')
+                        sistr = py_unicode(sistr)
                         ofp.write(sistr)
                         ndx += 1
                     ofp.close()
@@ -434,6 +435,8 @@ class SMI2SRTHandle(object):
     @staticmethod
     def demuxSMI(smi_sgml):
         try:
+            if app.config['config']['is_py3']:
+                smi_sgml = smi_sgml.decode()
             #LANG_PTN = re.compile("^\s*\.([A-Z]{2}CC) *{ *[Nn]ame:.*; *[Ll]ang: *(\w{2})-(\w{2});.*}", re.M|re.I)
             LANG_PTN = re.compile("^\s*\.([A-Z]{2}CC)", re.M|re.I)
             CLASS_PTN = re.compile("<[Pp] [Cc]lass=([A-Z]{2}CC)>")
