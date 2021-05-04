@@ -54,11 +54,11 @@ class smiItem(object):
         self.linecount = 0
     @staticmethod
     def ms2ts(ms):
-        hours = ms / 3600000
+        hours = int(ms / 3600000)
         ms = ms - hours * 3600000
-        minutes = ms / 60000
+        minutes = int(ms / 60000)
         ms = ms - minutes * 60000
-        seconds = ms / 1000
+        seconds = int(ms / 1000)
         ms = ms - seconds * 1000
         s = '%02d:%02d:%02d,%03d' % (hours, minutes, seconds, ms)
         return s
