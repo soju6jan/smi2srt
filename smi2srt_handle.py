@@ -153,6 +153,10 @@ class SMI2SRTHandle(object):
                                     pass
                                 else:
                                     #log_debug('remake is false..')
+                                    # 2021-12-19
+                                    if not SMI2SRTHandle.no_remove_smi:
+                                        log_debug("remove smi")
+                                        os.remove(eachfile)
                                     continue
                             log_debug('=========================================')
                             log_debug("Convert start : <%s>" % eachfile)
